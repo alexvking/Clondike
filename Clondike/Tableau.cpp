@@ -13,17 +13,12 @@ Tableau::Tableau()
     numCardsFaceUp = 1;
 }
 
-bool Tableau::isEmpty()
-{
-    return cardsList.empty();
-}
-
 bool Tableau::isFull()
 {
     return cardsList.back().rank == RANK_A;
 }
 
-bool Tableau::addCard(Card c)
+bool Tableau::placeCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_K) {
@@ -39,19 +34,4 @@ bool Tableau::addCard(Card c)
         return true;
     }
     return false;
-}
-
-void Tableau::deal(Card c)
-{
-    cardsList.push_back(c);
-}
-
-Card Tableau::cardAt(int i)
-{
-    return cardsList.at(i);
-}
-
-int Tableau::size()
-{
-    return cardsList.size();
 }

@@ -18,9 +18,9 @@ Deck::Deck()
     }
 }
 
-bool Deck::isEmpty()
+void Deck::flip()
 {
-    return cardsList.size() == 0;
+    std::reverse(cardsList.begin(), cardsList.end());
 }
 
 void Deck::shuffle()
@@ -31,9 +31,3 @@ void Deck::shuffle()
     std::shuffle(cardsList.begin(), cardsList.end(), g);
 }
 
-Card Deck::dealFromTop()
-{
-    Card c = cardsList.back();
-    cardsList.pop_back();
-    return c;
-}

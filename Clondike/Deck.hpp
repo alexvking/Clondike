@@ -10,16 +10,15 @@
 #define Deck_hpp
 
 #include <stdio.h>
-#include "Card.hpp"
+#include "CardPile.hpp"
 #include <vector>
 
-class Deck {
+class Deck: public CardPile {
 public:
     Deck();
-    
-    bool isEmpty();
     void shuffle();
-    Card dealFromTop();
+    void flip();
+    
 
     friend std::ostream &operator<<(std::ostream &os, Deck const &d) {
         for (auto ci = d.cardsList.begin(); ci != d.cardsList.end(); ++ci) {
@@ -28,10 +27,6 @@ public:
         
         return os;
     }
-    
-private:
-    std::vector<Card> cardsList;
-    
 };
 
 #endif /* Deck_hpp */

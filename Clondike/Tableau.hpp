@@ -10,19 +10,14 @@
 #define Tableau_hpp
 
 #include <stdio.h>
-#include "Card.hpp"
+#include "CardPile.hpp"
 #include <vector>
 
-class Tableau {
+class Tableau: public CardPile {
 public:
     Tableau();
-    bool isEmpty();
     bool isFull();
-    bool addCard(Card c);
-    int  size();
-    void deal(Card c);
-    Card cardAt(int i);
-
+    bool placeCard(Card c);
     friend std::ostream &operator<<(std::ostream &os, Tableau const &t) {
         for (auto ci = t.cardsList.begin(); ci != t.cardsList.end(); ++ci) {
             std::cout << *ci << " ";
@@ -30,11 +25,7 @@ public:
         
         return os;
     }
-    
     int numCardsFaceUp;
-private:
-    std::vector<Card> cardsList;
-
 };
 
 #endif /* Tableau_hpp */

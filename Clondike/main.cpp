@@ -10,16 +10,14 @@
 #include "Card.hpp"
 #include "Deck.hpp"
 #include "Board.hpp"
+#include "Game.hpp"
 
 int main(int argc, const char * argv[]) {
-    Card c = Card(RANK_J, HEART);
-    std::cout << c << std::endl;
     Deck d = Deck();
     d.shuffle();
-    std::cout << d;
-    std::cout << "Hello, World!\n";
-    
     Board b = Board(d);
+    Game g = Game(b);
     cout << b << std::endl;
+    g.play();
     return 0;
 }

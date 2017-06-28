@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "Deck.hpp"
-#include "DrawPile.hpp"
+#include "CardPile.hpp"
 #include "Foundation.hpp"
 #include "Tableau.hpp"
 #include <vector>
@@ -27,13 +27,14 @@ struct size_less
 
 class Board {
 public:
+    Board();
     Board(Deck d);
     
     friend ostream &operator<<(ostream &os, Board &b) {
         os << endl;
         os << "          DC   A1 A2 A3 A4\n";
         os << "          \\/\n";
-        if (b.d.isEmpty()) {
+        if (b.deck.isEmpty()) {
             os << "\033[44m" << "[ ]" << "\033[0m";
         } else {
             os << "\033[44m" << "[.]" << "\033[0m";
@@ -44,7 +45,7 @@ public:
         // Print up to three drawn cards
         for (int i = 1; i < 4; i++) {
             if (b.draw.size() >= i) {
-                os << b.draw.cardAt(i);
+                os << b.draw.cardAt(b.draw.size() - i);
             } else {
                 os << "  ";
             }
@@ -95,10 +96,10 @@ public:
         return os;
     }
     
-    Deck d;
+    Deck deck;
     vector<Tableau> tableaus;
     vector<Foundation> foundations;
-    DrawPile draw;
+    CardPile draw;
 };
 
 

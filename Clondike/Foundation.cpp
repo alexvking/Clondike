@@ -8,17 +8,13 @@
 
 #include "Foundation.hpp"
 
-bool Foundation::isEmpty()
-{
-    return cardsList.empty();
-}
 
 bool Foundation::isFull()
 {
     return cardsList.size() == 13;
 }
 
-bool Foundation::addCard(Card c)
+bool Foundation::placeCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_A) {
@@ -31,14 +27,4 @@ bool Foundation::addCard(Card c)
         return true;
     }
     return false;
-}
-
-Card Foundation::cardAt(int i)
-{
-    return cardsList.at(i);
-}
-
-int Foundation::size()
-{
-    return cardsList.size();
 }

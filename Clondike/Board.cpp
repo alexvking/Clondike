@@ -8,12 +8,20 @@
 
 #include "Board.hpp"
 
+Board::Board()
+{
+    return;
+}
+
 Board::Board(Deck d)
 {
     for (int i = 0; i < 7; i++) {
         tableaus.push_back(Tableau());
         for (int j = 0; j < i + 1; j++) {
-            tableaus.at(i).deal(d.dealFromTop());
+            tableaus.at(i).addCard(d.dealFromTop());
         }
     }
+//    cout << "Deck is of length " << d.size() << endl;
+    deck = d;
+    
 }
