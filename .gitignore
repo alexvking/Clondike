@@ -6,3 +6,7 @@
 *.out
 
 Clondike/a.out
+
+build/*
+
+Clondike.xcodeproj/*

@@ -82,9 +82,9 @@
 			children = (
 				FA63D77B1F02D755002C4959 /* main.cpp */,
 				FA63D7A01F034DC3002C4959 /* Game.cpp */,
+				FA63D7A11F034DC3002C4959 /* Game.hpp */,
 				FAC8E4A91F0418FA006AFAB0 /* Command.cpp */,
 				FAC8E4AA1F0418FA006AFAB0 /* Command.hpp */,
-				FA63D7A11F034DC3002C4959 /* Game.hpp */,
 				FA63D78E1F030A93002C4959 /* Tableau.cpp */,
 				FA63D78F1F030A93002C4959 /* Tableau.hpp */,
 				FA63D78C1F02FEBC002C4959 /* Foundation.hpp */,

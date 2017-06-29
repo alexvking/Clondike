@@ -11,6 +11,9 @@
 
 #include <stdio.h>
 #include "Board.hpp"
+#include "Command.hpp"
+
+enum Error { UNRECOGNIZED, INVALID, NO_UNDO };
 
 class Game {
 public:
@@ -19,6 +22,15 @@ public:
     void dealCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     void moveCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     void play();
+    void executeCommand(Command command);
+    bool makePlay(Command command);
+    void printErrorMessage(Error e);
+    std::vector<Command> generateValidMoves();
+    
+    Command parseToken1(string token1);
+    Command parsePlayTokens(string src_row, string src_col,
+                            string dst_row, string dst_col);
+    
     
     friend std::ostream &operator<<(std::ostream &os, Game &g) {
         return os << g.board;
@@ -26,6 +38,7 @@ public:
     
 private:
     Board board;
+    Board previous;
     int   hint;
     int   moves;
     int   lateralList;

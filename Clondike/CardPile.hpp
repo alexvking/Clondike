@@ -20,6 +20,7 @@ public:
     int  size();
     Card cardAt(int i);
     Card dealFromTop();
+    Card cardAtTop();
     
 protected:
     std::vector<Card> cardsList;

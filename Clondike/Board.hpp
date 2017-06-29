@@ -29,21 +29,22 @@ class Board {
 public:
     Board();
     Board(Deck d);
+    int maxTableauLength();
     
     friend ostream &operator<<(ostream &os, Board &b) {
         os << endl;
-        os << "          DC   A1 A2 A3 A4\n";
+        os << "          01   02 03 04 05\n";
         os << "          \\/\n";
         if (b.deck.isEmpty()) {
-            os << "\033[44m" << "[ ]" << "\033[0m";
+            os << (COLOR ? "\033[44m" : "") << "[ ]" << (COLOR ? "\033[0m" : "");
         } else {
-            os << "\033[44m" << "[.]" << "\033[0m";
+            os << (COLOR ? "\033[44m" : "") << "[.]" << (COLOR ? "\033[0m" : "");
         }
 
         os << " ";
 
         // Print up to three drawn cards
-        for (int i = 1; i < 4; i++) {
+        for (int i = 3; i > 0; i--) {
             if (b.draw.size() >= i) {
                 os << b.draw.cardAt(b.draw.size() - i);
             } else {
@@ -55,7 +56,7 @@ public:
         
         // Print accumulation piles
         for(auto& f: b.foundations) {
-            if (f.size() > 1) {
+            if (f.size() > 0) {
                 os << f.cardAt(f.size() - 1);
             } else {
                 os << "__";
@@ -73,17 +74,17 @@ public:
         os << "\n\n";
         
         // Find the largest column of working cards for array bounds
-        int maxLength = max_element(b.tableaus.begin(), b.tableaus.end(), size_less())->size();
+        int maxLength = b.maxTableauLength();
         
         // Print each column of cards one row at a time
-        for (int row = 1; row < (maxLength + 1); row++) {
+        for (int row = 0; row < (maxLength + 1); row++) {
             for (auto& col: b.tableaus) {
                 if (col.size() > row) {
                     // If the card is uncovered, print its identity
                     if ((col.size() - row) <= col.numCardsFaceUp) {
                         os << col.cardAt(row);
                     } else {
-                        os << "\033[44m" << "[]" << "\033[0m";
+                        os << (COLOR ? "\033[44m" : "") << "[]" << (COLOR ? "\033[0m" : "");
                     }
                     os << "  ";
                 } else {
@@ -91,7 +92,7 @@ public:
                 }
                 
             }
-            os << "    " << row << "\n";
+            os << "    " << (row + 1) << "\n";
         }
         return os;
     }

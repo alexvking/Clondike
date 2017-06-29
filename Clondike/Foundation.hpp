@@ -15,7 +15,6 @@
 
 class Foundation: public CardPile {
 public:
-    Foundation();
     bool isFull();
     bool placeCard(Card c);
         
@@ -25,9 +24,6 @@ public:
         }
         return os;
     }
-    
-private:
-    Suit suit;
 };
 
 #endif /* Foundation_hpp */

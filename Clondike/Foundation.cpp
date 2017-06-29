@@ -18,12 +18,12 @@ bool Foundation::placeCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_A) {
-            cardsList.push_back(c);
+//            cardsList.push_back(c);
             return true;
         }
     } else if (cardsList.back().suit == c.suit and
                cardsList.back().rank == c.rank - 1) {
-        cardsList.push_back(c);
+//        cardsList.push_back(c);
         return true;
     }
     return false;

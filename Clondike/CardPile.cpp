@@ -35,3 +35,8 @@ Card CardPile::dealFromTop()
     cardsList.pop_back();
     return c;
 }
+
+Card CardPile::cardAtTop()
+{
+    return cardsList.back();
+}
