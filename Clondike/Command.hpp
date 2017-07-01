@@ -20,12 +20,12 @@ using namespace std;
 
 enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, HELP, PLAY };
 
-static std::vector<std::string> quitStrings = {"q", "quit", "exit"};
-static std::vector<std::string> drawStrings = {"d", "draw"};
-static std::vector<std::string> hintStrings = {"h", "hint"};
-static std::vector<std::string> undoStrings = {"u", "undo"};
+static std::vector<std::string> quitStrings  = {"q", "quit", "exit"};
+static std::vector<std::string> drawStrings  = {"d", "draw"};
+static std::vector<std::string> hintStrings  = {"h", "hint"};
+static std::vector<std::string> undoStrings  = {"u", "undo"};
 static std::vector<std::string> solveStrings = {"s", "solve"};
-static std::vector<std::string> helpStrings = {"help"};
+static std::vector<std::string> helpStrings  = {"help"};
 
 
 // Wish list: sew together key-value list of MoveType, StringList such that we can
@@ -38,8 +38,5 @@ struct Command {
     int       dstCol;
     int       dstRow;
     
-    friend ostream &operator<<(ostream &os, Command const &c) {
-        std::cout << c.srcCol << " " << c.srcRow << " --> " << c.dstCol << " " << c.dstRow << std::endl;
-        return os;
-    }
+    friend ostream &operator<<(ostream &os, Command const &c);
 };

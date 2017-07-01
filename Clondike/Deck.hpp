@@ -18,15 +18,6 @@ public:
     Deck();
     void shuffle();
     void flip();
-    
-
-    friend std::ostream &operator<<(std::ostream &os, Deck const &d) {
-        for (auto ci = d.cardsList.begin(); ci != d.cardsList.end(); ++ci) {
-            std::cout << *ci << " ";
-        }
-        
-        return os;
-    }
 };
 
 #endif /* Deck_hpp */

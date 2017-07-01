@@ -7,3 +7,8 @@
 //
 
 #include "Command.hpp"
+
+ostream &operator<<(ostream &os, Command const &c) {
+    os << c.srcCol << " " << c.srcRow << " --> " << c.dstCol << " " << c.dstRow;
+    return os;
+}

@@ -15,6 +15,7 @@
 		FA63D7991F031238002C4959 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA63D7971F031238002C4959 /* Board.cpp */; };
 		FA63D79F1F03471A002C4959 /* CardPile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA63D79D1F03471A002C4959 /* CardPile.cpp */; };
 		FA63D7A21F034DC3002C4959 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA63D7A01F034DC3002C4959 /* Game.cpp */; };
+		FA8C96E91F06F0D4001DEE08 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA8C96E81F06F0D4001DEE08 /* Card.cpp */; };
 		FAC8E4AB1F0418FA006AFAB0 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAC8E4A91F0418FA006AFAB0 /* Command.cpp */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		FA63D79E1F03471A002C4959 /* CardPile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CardPile.hpp; sourceTree = "<group>"; };
 		FA63D7A01F034DC3002C4959 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		FA63D7A11F034DC3002C4959 /* Game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
+		FA8C96E81F06F0D4001DEE08 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
 		FAC8E4A91F0418FA006AFAB0 /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		FAC8E4AA1F0418FA006AFAB0 /* Command.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Command.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +83,28 @@
 			isa = PBXGroup;
 			children = (
 				FA63D77B1F02D755002C4959 /* main.cpp */,
+				FA8C96EB1F06F647001DEE08 /* Klondike */,
+				FA8C96EA1F06F5F6001DEE08 /* Cards */,
+			);
+			path = Clondike;
+			sourceTree = "<group>";
+		};
+		FA8C96EA1F06F5F6001DEE08 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				FA63D79D1F03471A002C4959 /* CardPile.cpp */,
+				FA63D79E1F03471A002C4959 /* CardPile.hpp */,
+				FA63D7851F02E252002C4959 /* Deck.cpp */,
+				FA63D7861F02E252002C4959 /* Deck.hpp */,
+				FA63D7831F02D8C9002C4959 /* Card.hpp */,
+				FA8C96E81F06F0D4001DEE08 /* Card.cpp */,
+			);
+			name = Cards;
+			sourceTree = "<group>";
+		};
+		FA8C96EB1F06F647001DEE08 /* Klondike */ = {
+			isa = PBXGroup;
+			children = (
 				FA63D7A01F034DC3002C4959 /* Game.cpp */,
 				FA63D7A11F034DC3002C4959 /* Game.hpp */,
 				FAC8E4A91F0418FA006AFAB0 /* Command.cpp */,
@@ -89,15 +113,10 @@
 				FA63D78F1F030A93002C4959 /* Tableau.hpp */,
 				FA63D78C1F02FEBC002C4959 /* Foundation.hpp */,
 				FA63D78B1F02FEBC002C4959 /* Foundation.cpp */,
-				FA63D79D1F03471A002C4959 /* CardPile.cpp */,
-				FA63D79E1F03471A002C4959 /* CardPile.hpp */,
 				FA63D7971F031238002C4959 /* Board.cpp */,
 				FA63D7981F031238002C4959 /* Board.hpp */,
-				FA63D7851F02E252002C4959 /* Deck.cpp */,
-				FA63D7861F02E252002C4959 /* Deck.hpp */,
-				FA63D7831F02D8C9002C4959 /* Card.hpp */,
 			);
-			path = Clondike;
+			name = Klondike;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +185,7 @@
 				FA63D78D1F02FEBC002C4959 /* Foundation.cpp in Sources */,
 				FA63D78A1F02E69D002C4959 /* Deck.cpp in Sources */,
 				FA63D7901F030A93002C4959 /* Tableau.cpp in Sources */,
+				FA8C96E91F06F0D4001DEE08 /* Card.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

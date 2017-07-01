@@ -10,20 +10,13 @@
 #define Foundation_hpp
 
 #include <stdio.h>
-#include "CardPile.hpp"
 #include <vector>
+#include "CardPile.hpp"
 
 class Foundation: public CardPile {
 public:
     bool isFull();
     bool placeCard(Card c);
-        
-    friend std::ostream &operator<<(std::ostream &os, Foundation const &f) {
-        for (auto ci = f.cardsList.begin(); ci != f.cardsList.end(); ++ci) {
-            std::cout << *ci << " ";
-        }
-        return os;
-    }
 };
 
 #endif /* Foundation_hpp */

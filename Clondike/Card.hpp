@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#define COLOR true
+#define COLOR false
 
 using namespace std;
 
@@ -30,36 +30,11 @@ static string suitNames = "HCDS";
 
 class Card {
 public:
-    Card(Rank r, Suit s)
-    {
-        this->rank = r;
-        this->suit = s;
-    }
-    
+    Card(Rank r, Suit s);
+    friend std::ostream &operator<<(std::ostream &os, Card const &c);
+
     Rank rank;
     Suit suit;
-    
-    friend std::ostream &operator<<(std::ostream &os, Card const &c) {
-        switch (c.suit) {
-            case HEART:
-                cout << (COLOR ? "\033[32;41m" : "") << rankNames[c.rank] << suitNames[c.suit] << (COLOR ? "\033[0m" : "");
-                break;
-            case SPADE:
-                cout << (COLOR ? "\033[36;40m" : "") << rankNames[c.rank] << suitNames[c.suit] << (COLOR ? "\033[0m" : "");
-                break;
-            case CLUB:
-                cout << (COLOR ? "\033[33;40m" : "") << rankNames[c.rank] << suitNames[c.suit] << (COLOR ? "\033[0m" : "");
-                break;
-            case DIAMOND:
-                cout << (COLOR ? "\033[37;41m" : "") << rankNames[c.rank] << suitNames[c.suit] << (COLOR ? "\033[0m" : "");
-                break;
-            default:
-                break;
-        }
-        return os;
-    }
-
-    
 };
 
 #endif /* Card_hpp */

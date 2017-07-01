@@ -19,9 +19,9 @@ class Game {
 public:
     Game(Board b);
     bool drawCards();
+    void play();
     void dealCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     void moveCardRange(CardPile *src, CardPile *dst, int cardsToMove);
-    void play();
     void executeCommand(Command command);
     bool makePlay(Command command);
     void printErrorMessage(Error e);

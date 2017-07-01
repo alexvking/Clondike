@@ -29,6 +29,7 @@ int CardPile::size()
     return cardsList.size();
 }
 
+// Removes card at top of pile and returns it
 Card CardPile::dealFromTop()
 {
     Card c = cardsList.back();

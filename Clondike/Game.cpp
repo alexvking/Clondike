@@ -9,8 +9,6 @@
 #include "Game.hpp"
 #include <sstream>
 
-
-
 Game::Game(Board b)
 {
     board = b;
@@ -21,6 +19,11 @@ void Game::play()
     std::vector<std::string> tokens;
     string s = "";
     string token;
+
+    // should be refactored
+    // while (getCommand)
+    // executeCommand()
+    // then the cmdUI should be abstracted away from Game
     
     while (true) {
         std::getline(cin, s);
@@ -74,14 +77,14 @@ void Game::executeCommand(Command command)
             drawCards();
             auto validMoves = generateValidMoves();
             for (auto & m : validMoves) {
-                cout << m;
+                cout << m << endl;
             }
             break;
         }
         case HINT: {
             auto validMoves = generateValidMoves();
             for (auto & m : validMoves) {
-                cout << m;
+                cout << m << endl;
             }
             break;
         }
@@ -107,7 +110,7 @@ void Game::executeCommand(Command command)
             canUndo = true;
             auto validMoves = generateValidMoves();
             for (auto & m : validMoves) {
-                cout << m;
+                cout << m << endl;
             }
             break;
         }
