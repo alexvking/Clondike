@@ -22,7 +22,6 @@ bool Tableau::placeCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_K) {
-//            cardsList.push_back(c);
             return true;
         }
     // if not empty, check that the card is one smaller, and that the suit color
@@ -30,7 +29,6 @@ bool Tableau::placeCard(Card c)
     // be odd
     } else if ((cardsList.back().rank == c.rank + 1) and
                ((cardAtTop().suit + c.suit) % 2 == 1)) {
-//        cardsList.push_back(c);
         return true;
     }
     return false;

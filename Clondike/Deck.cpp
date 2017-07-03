@@ -6,7 +6,6 @@
 //  Copyright © 2017 Alex King. All rights reserved.
 //
 
-#include <random>
 #include "Deck.hpp"
 
 Deck::Deck()
@@ -27,7 +26,5 @@ void Deck::shuffle()
 {
     std::random_device rd;
     std::mt19937 g(rd());
-    
     std::shuffle(cardsList.begin(), cardsList.end(), g);
 }
-

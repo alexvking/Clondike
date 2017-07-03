@@ -16,6 +16,7 @@
 		FA63D79F1F03471A002C4959 /* CardPile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA63D79D1F03471A002C4959 /* CardPile.cpp */; };
 		FA63D7A21F034DC3002C4959 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA63D7A01F034DC3002C4959 /* Game.cpp */; };
 		FA8C96E91F06F0D4001DEE08 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA8C96E81F06F0D4001DEE08 /* Card.cpp */; };
+		FA8C96EE1F0736C6001DEE08 /* cmdInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA8C96EC1F0736C6001DEE08 /* cmdInterface.cpp */; };
 		FAC8E4AB1F0418FA006AFAB0 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAC8E4A91F0418FA006AFAB0 /* Command.cpp */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,8 @@
 		FA63D7A01F034DC3002C4959 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		FA63D7A11F034DC3002C4959 /* Game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 		FA8C96E81F06F0D4001DEE08 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
+		FA8C96EC1F0736C6001DEE08 /* cmdInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cmdInterface.cpp; sourceTree = "<group>"; };
+		FA8C96ED1F0736C6001DEE08 /* cmdInterface.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cmdInterface.hpp; sourceTree = "<group>"; };
 		FAC8E4A91F0418FA006AFAB0 /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		FAC8E4AA1F0418FA006AFAB0 /* Command.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Command.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,8 +99,8 @@
 				FA63D79E1F03471A002C4959 /* CardPile.hpp */,
 				FA63D7851F02E252002C4959 /* Deck.cpp */,
 				FA63D7861F02E252002C4959 /* Deck.hpp */,
-				FA63D7831F02D8C9002C4959 /* Card.hpp */,
 				FA8C96E81F06F0D4001DEE08 /* Card.cpp */,
+				FA63D7831F02D8C9002C4959 /* Card.hpp */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -115,6 +118,8 @@
 				FA63D78B1F02FEBC002C4959 /* Foundation.cpp */,
 				FA63D7971F031238002C4959 /* Board.cpp */,
 				FA63D7981F031238002C4959 /* Board.hpp */,
+				FA8C96EC1F0736C6001DEE08 /* cmdInterface.cpp */,
+				FA8C96ED1F0736C6001DEE08 /* cmdInterface.hpp */,
 			);
 			name = Klondike;
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 			files = (
 				FA63D7991F031238002C4959 /* Board.cpp in Sources */,
 				FAC8E4AB1F0418FA006AFAB0 /* Command.cpp in Sources */,
+				FA8C96EE1F0736C6001DEE08 /* cmdInterface.cpp in Sources */,
 				FA63D79F1F03471A002C4959 /* CardPile.cpp in Sources */,
 				FA63D77C1F02D755002C4959 /* main.cpp in Sources */,
 				FA63D7A21F034DC3002C4959 /* Game.cpp in Sources */,

@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <vector>
+
 #include "CardPile.hpp"
 
 class Foundation: public CardPile {

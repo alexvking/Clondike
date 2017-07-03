@@ -10,8 +10,9 @@
 #define CardPile_hpp
 
 #include <stdio.h>
-#include "Card.hpp"
 #include <vector>
+
+#include "Card.hpp"
 
 class CardPile {
 public:

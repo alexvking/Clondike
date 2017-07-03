@@ -10,8 +10,10 @@
 #define Deck_hpp
 
 #include <stdio.h>
-#include "CardPile.hpp"
 #include <vector>
+#include <random>
+
+#include "CardPile.hpp"
 
 class Deck: public CardPile {
 public:

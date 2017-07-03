@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <vector>
+
 #include "Deck.hpp"
 #include "CardPile.hpp"
 #include "Foundation.hpp"
@@ -22,12 +23,6 @@
 #define NUM_CARDS_DRAWN 3
 
 using namespace std;
-
-struct size_less
-{
-    template<class T> bool operator()(T &a, T &b) const
-    { return a.size() < b.size(); }
-};
 
 class Board {
 public:

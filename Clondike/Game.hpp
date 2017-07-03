@@ -10,31 +10,23 @@
 #define Game_hpp
 
 #include <stdio.h>
+
 #include "Board.hpp"
 #include "Command.hpp"
 
-enum Error { UNRECOGNIZED, INVALID, NO_UNDO };
-
 class Game {
 public:
+    Game();
     Game(Board b);
     bool drawCards();
-    void play();
     void dealCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     void moveCardRange(CardPile *src, CardPile *dst, int cardsToMove);
-    void executeCommand(Command command);
+    Status executeCommand(Command command);
     bool makePlay(Command command);
-    void printErrorMessage(Error e);
+    bool checkIfWon();
     std::vector<Command> generateValidMoves();
     
-    Command parseToken1(string token1);
-    Command parsePlayTokens(string src_row, string src_col,
-                            string dst_row, string dst_col);
-    
-    
-    friend std::ostream &operator<<(std::ostream &os, Game &g) {
-        return os << g.board;
-    }
+    Board* getBoard();
     
 private:
     Board board;
@@ -46,7 +38,6 @@ private:
     bool  canUndo;
     bool  winnableIsKnown;
     int   score;
-    
 };
 
 #endif /* Game_hpp */

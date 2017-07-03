@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <iostream>
 
-#define COLOR false
-
 using namespace std;
 
 enum Rank {

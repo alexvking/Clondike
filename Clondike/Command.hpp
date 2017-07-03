@@ -14,12 +14,15 @@
 #include <string>
 #include <iostream>
 
-#endif /* Command_hpp */
-
 using namespace std;
 
-enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, HELP, PLAY };
+// TODO: probably drop the "type" from this enum, maybe just rename it
+enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, HELP, PLAY, UNKNOWN };
 
+enum Status { OK, WON, UNRECOGNIZED, INVALID, NO_UNDO };
+
+// Wish list: sew together key-value list of MoveType, StringList such that we can
+// easily iterate over it to check if input is in StringList, in which case output Move
 static std::vector<std::string> quitStrings  = {"q", "quit", "exit"};
 static std::vector<std::string> drawStrings  = {"d", "draw"};
 static std::vector<std::string> hintStrings  = {"h", "hint"};
@@ -27,16 +30,14 @@ static std::vector<std::string> undoStrings  = {"u", "undo"};
 static std::vector<std::string> solveStrings = {"s", "solve"};
 static std::vector<std::string> helpStrings  = {"help"};
 
-
-// Wish list: sew together key-value list of MoveType, StringList such that we can
-// easily iterate over it to check if input is in StringList, in which case output Move
-
 struct Command {
-    MoveType  move;
-    int       srcCol;
-    int       srcRow;
-    int       dstCol;
-    int       dstRow;
+    MoveType move;
+    int      srcCol;
+    int      srcRow;
+    int      dstCol;
+    int      dstRow;
     
     friend ostream &operator<<(ostream &os, Command const &c);
 };
+
+#endif /* Command_hpp */
