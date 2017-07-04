@@ -17,13 +17,14 @@
 using namespace std;
 
 // TODO: probably drop the "type" from this enum, maybe just rename it
-enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, HELP, PLAY, UNKNOWN };
+enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, AUTO, HELP, PLAY, UNKNOWN };
 
 enum Status { OK, WON, UNRECOGNIZED, INVALID, NO_UNDO };
 
 // Wish list: sew together key-value list of MoveType, StringList such that we can
 // easily iterate over it to check if input is in StringList, in which case output Move
 static std::vector<std::string> quitStrings  = {"q", "quit", "exit"};
+static std::vector<std::string> autoStrings  = {"a", "auto", "autoplay"};
 static std::vector<std::string> drawStrings  = {"d", "draw"};
 static std::vector<std::string> hintStrings  = {"h", "hint"};
 static std::vector<std::string> undoStrings  = {"u", "undo"};

@@ -19,8 +19,11 @@ enum Rank {
     RANK_10, RANK_J, RANK_Q, RANK_K, NUM_RANKS
 };
 
+/*
+ Red is even, black is odd -- makes for easy math for legal card placement
+*/
 enum Suit {
-    HEART, CLUB, DIAMOND, SPADE, NUM_SUITS // red is even, black is odd
+    HEART, CLUB, DIAMOND, SPADE, NUM_SUITS
 };
 
 static string rankNames = "A23456789TJQK";

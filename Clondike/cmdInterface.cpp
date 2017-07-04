@@ -47,12 +47,18 @@ void GameInterface::launchGameLoop()
             case OK: {
                 switch (command.move) {
                     case PLAY:
+                        if (g.checkIfWon()) {
+                            exitGame();
+                        }
                         displayHints();
                         updateView();
                         break;
                     case DRAW:
                         displayHints();
                         updateView();
+                        break;
+                    case AUTO:
+                        autoPlay();
                         break;
                     case UNDO:
                         displayHints();
@@ -103,6 +109,10 @@ Command GameInterface::parseToken1(string token1)
                != quitStrings.end()) {
         
         return Command { QUIT };
+    } else if (std::find(autoStrings.begin(), autoStrings.end(), token1)
+               != autoStrings.end()) {
+        
+        return Command { AUTO };
     } else if (std::find(drawStrings.begin(), drawStrings.end(), token1)
                != drawStrings.end()) {
         
@@ -119,6 +129,26 @@ Command GameInterface::parseToken1(string token1)
         // TODO: this shouldn't be the else case, there should be one more
         return Command { PLAY };
     }
+}
+
+void GameInterface::autoPlay()
+{
+    int tries = 20;
+    while (!g.checkIfWon() and tries > 0)
+    {
+        auto validMoves = g.generateValidMoves();
+        if (validMoves.size() > 0) {
+            g.executeCommand(validMoves.at(0));
+            tries = 20;
+        }
+        else {
+            g.executeCommand(Command { DRAW });
+            tries--;
+        }
+        updateView();
+    }
+    if (tries == 0) cout << "Failure.\n";
+    else cout << "Success?!\n";
 }
 
 // TODO: error handling

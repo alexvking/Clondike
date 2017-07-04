@@ -27,6 +27,9 @@ Board* Game::getBoard()
     return &board;
 }
 
+// What is the contract of executeCommand?
+// the logic for UNDO and PLAY should be refactored into new functions, and then
+// the gameloop function could work better
 Status Game::executeCommand(Command command)
 {
     switch (command.move) {
@@ -51,6 +54,9 @@ Status Game::executeCommand(Command command)
             break;
         }
         case SOLVE: {
+            return OK;
+        }
+        case AUTO: {
             return OK;
         }
         case HELP: {

@@ -39,6 +39,7 @@ private:
     void    printCard(Card c);
     void    displayHints();
     void    exitGame();
+    void    autoPlay();
     
 };
 

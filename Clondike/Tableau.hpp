@@ -18,13 +18,6 @@ public:
     Tableau();
     bool isFull();
     bool placeCard(Card c);
-    friend std::ostream &operator<<(std::ostream &os, Tableau const &t) {
-        for (auto ci = t.cardsList.begin(); ci != t.cardsList.end(); ++ci) {
-            std::cout << *ci << " ";
-        }
-        
-        return os;
-    }
     int numCardsFaceUp;
 };
 
