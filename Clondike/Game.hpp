@@ -18,11 +18,11 @@ class Game {
 public:
     Game();
     Game(Board b);
-    bool drawCards();
+    void drawCards();
     void dealCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     void moveCardRange(CardPile *src, CardPile *dst, int cardsToMove);
     Status executeCommand(Command command);
-    bool makePlay(Command command);
+    bool makePlay(Position src, Position dst);
     bool checkIfWon();
     std::vector<Command> generateValidMoves();
     

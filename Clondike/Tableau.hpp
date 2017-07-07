@@ -17,8 +17,9 @@ class Tableau: public CardPile {
 public:
     Tableau();
     bool isFull();
-    bool placeCard(Card c);
-    int numCardsFaceUp;
+    virtual bool canPlaceCard(Card c);
+    int  getNumCardsFaceUp();
+    void setNumCardsFaceUp(int cardsFaceUp);
 };
 
 #endif /* Tableau_hpp */

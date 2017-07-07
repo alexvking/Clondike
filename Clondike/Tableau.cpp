@@ -18,7 +18,7 @@ bool Tableau::isFull()
     return cardsList.back().rank == RANK_A;
 }
 
-bool Tableau::placeCard(Card c)
+bool Tableau::canPlaceCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_K) {
@@ -32,4 +32,13 @@ bool Tableau::placeCard(Card c)
         return true;
     }
     return false;
+}
+
+int Tableau::getNumCardsFaceUp()
+{
+    return numCardsFaceUp;
+}
+void Tableau::setNumCardsFaceUp(int cardsFaceUp)
+{
+    numCardsFaceUp = cardsFaceUp;
 }

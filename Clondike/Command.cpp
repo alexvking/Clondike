@@ -9,6 +9,32 @@
 #include "Command.hpp"
 
 ostream &operator<<(ostream &os, Command const &c) {
-    os << c.srcCol << " " << c.srcRow << " --> " << c.dstCol << " " << c.dstRow;
+    switch (c.src.type) {
+        case POS_DRAW: {
+            os << "DC";
+            break;
+        }
+        case POS_FOUNDATION: {
+            os << "F" << c.src.f;
+            break;
+        }
+            
+        case POS_TABLEAU: {
+            os << c.src.t.col << "," << c.src.t.row;
+            break;
+        }
+    }
+    os << " --> ";
+    switch (c.dst.type) {
+        case POS_FOUNDATION: {
+            os << "F" << c.dst.f;
+            break;
+        }
+            
+        case POS_TABLEAU: {
+            os << c.dst.t.col << "," << c.dst.t.row << " ";
+            break;
+        }
+    }
     return os;
 }

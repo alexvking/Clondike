@@ -13,7 +13,7 @@ bool Foundation::isFull()
     return cardsList.size() == 13;
 }
 
-bool Foundation::placeCard(Card c)
+bool Foundation::canPlaceCard(Card c)
 {
     if (this->isEmpty()) {
         if (c.rank == RANK_A) {

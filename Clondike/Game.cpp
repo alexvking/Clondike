@@ -27,7 +27,7 @@ Board* Game::getBoard()
     return &board;
 }
 
-// What is the contract of executeCommand?
+// TODO:
 // the logic for UNDO and PLAY should be refactored into new functions, and then
 // the gameloop function could work better
 Status Game::executeCommand(Command command)
@@ -63,7 +63,7 @@ Status Game::executeCommand(Command command)
             return OK;
         }
         case PLAY: {
-            bool result = makePlay(command);
+            bool result = makePlay(command.src, command.dst);
             if (result == false) return INVALID;
             else {
                 bool finished = checkIfWon();
@@ -84,127 +84,84 @@ bool Game::checkIfWon()
                        [](Foundation f){return f.size() == 13;});
 }
 
-bool Game::makePlay(Command command)
+// makePlay receives two Position definitions. It translates Positions
+// to actual data addresses of cards to be moved.
+bool Game::makePlay(Position src, Position dst)
 {
-    // Check that all coordinates are in bounds: rows 0-7 are valid, columns 1-?
-    // depending on depth of board
-    int srcCol = command.srcCol;
-    int srcRow = command.srcRow;
-    int dstCol = command.dstCol;
-    int dstRow = command.dstRow;
     
-    if (srcCol < 0 or srcCol > board.tableaus.size()) {
-        return false;
-    }
-    if (dstCol < 0 or dstCol > board.tableaus.size()) {
-        return false;
-    }
-    if (srcRow < 1 or srcRow > board.maxTableauLength()) {
-        return false;
-    }
-    if (dstRow < 1 or dstRow > (board.maxTableauLength() + 1)) {
-        return false;
-    }
+    CardPile *srcPile, *dstPile;
+    Card srcCard;
+    int numCardsMoving = 0;
+    int srcCardsLeftFaceUp = 0;
     
-    // If destination is foundation
-    // row and column are actually switched here from how the board is physically
-    // displayed. This is because the first number sent is a "0", really indicating
-    // "row 0"
-    if (dstCol == 0) {
-        int numCardsMoving = 1;
-        if (dstRow < 2 or dstRow > 5) return false; // must be valid foundation
-        
-        // locate source card
-        if (srcCol == 0) {
-            if (srcRow == 1) {
-                
-                // draw card is source
-                if (board.foundations.at(dstRow - 2).placeCard(board.draw.cardAtTop())) {
-                    previous = board;
-                    moveCardRange(&board.draw, &board.foundations.at(dstRow - 2), numCardsMoving);
-                    return true;
-                }
-            }
-        }
-        else if (srcCol >= 1 and srcCol <= 7) {
-            // a tableau is the source...
-            // if not the last card in the stack, not legal
-            if (srcRow != board.tableaus.at(srcCol - 1).size()) return false;
+    switch (src.type) {
+        case POS_DRAW: {
+            srcPile = &board.draw;
+            if (srcPile->size() == 0) return false;
+            srcCard = srcPile->cardAtTop();
             
-            if (board.foundations.at(dstRow - 2).placeCard(board.tableaus.at(srcCol - 1).cardAt(srcRow - 1))) {
-                previous = board;
-                moveCardRange(&board.tableaus.at(srcCol - 1), &board.foundations.at(dstRow - 2), numCardsMoving);
-                if (board.tableaus.at(srcCol - 1).size() == 0) {
-                    board.tableaus.at(srcCol - 1).numCardsFaceUp = 0;
-                }
-                else if (board.tableaus.at(srcCol - 1).numCardsFaceUp != 1) {
-                    board.tableaus.at(srcCol - 1).numCardsFaceUp -= 1;
-                }
-                return true;
-            }
+            numCardsMoving = 1;
+            break;
         }
-    }
-    // If destination is tableau
-    else if (dstCol > 0 and dstCol <= board.maxTableauLength()) {
-        
-        // locate source card
-        if (srcCol == 0) {
-            if (srcRow == 1) {
-                // draw card is source
-                int numCardsMoving = 1;
-                if (board.tableaus.at(dstCol - 1).placeCard(board.draw.cardAtTop())) {
-                    previous = board;
-                    moveCardRange(&board.draw, &board.tableaus.at(dstCol - 1), numCardsMoving);
-                    board.tableaus.at(dstCol - 1).numCardsFaceUp += numCardsMoving;
-                    return true;
-                }
-                
-            } else if (srcCol >= 2 and srcCol <= 5) {
-                // foundation is source
-                // TODO: not working
-                int numCardsMoving = 1;
-                if (board.tableaus.at(dstCol - 1).placeCard(board.foundations.at(srcRow - 2).cardAtTop())) {
-                    previous = board;
-                    moveCardRange(&board.foundations.at(srcRow - 2), &board.tableaus.at(dstCol - 1), numCardsMoving);
-                    board.tableaus.at(dstCol - 1).numCardsFaceUp += numCardsMoving;
-                    return true;
-                }
-            }
-        }
-        else { // if (srcRow >= 1 and srcRow <=7) {
-            // a tableau is the source
-            int numCardsMoving = board.tableaus.at(srcCol - 1).size() - srcRow + 1;
-            if (board.tableaus.at(dstCol - 1).placeCard(board.tableaus.at(srcCol - 1).cardAt(srcRow - 1))) {
-                previous = board;
-                moveCardRange(&board.tableaus.at(srcCol - 1), &board.tableaus.at(dstCol - 1), numCardsMoving);
-                board.tableaus.at(dstCol - 1).numCardsFaceUp += numCardsMoving;
-                board.tableaus.at(srcCol - 1).numCardsFaceUp -= numCardsMoving;
-                if (board.tableaus.at(srcCol - 1).size() > 0 and
-                    board.tableaus.at(srcCol - 1).numCardsFaceUp != 1) {
-                    board.tableaus.at(srcCol - 1).numCardsFaceUp = 1;
-                }
-                return true;
-            }
+        case POS_FOUNDATION: {
+            srcPile = &board.foundations.at(src.f - 1);
+            srcCard = srcPile->cardAtTop();
             
+            numCardsMoving = 1;
+            break;
+        }
+        case POS_TABLEAU: {
+            srcPile = &board.tableaus.at(src.t.col - 1);
+            if (src.t.row < 1 or src.t.row > srcPile->size()) return false;
+            srcCard = srcPile->cardAt(src.t.row - 1);
+            numCardsMoving = srcPile->size() - src.t.row + 1;
+            if (numCardsMoving < srcPile->getNumCardsFaceUp()) {
+                srcCardsLeftFaceUp = srcPile->getNumCardsFaceUp() - numCardsMoving;
+            } else if (numCardsMoving == srcPile->size()) {
+                srcCardsLeftFaceUp = 0;
+            } else {
+                srcCardsLeftFaceUp = 1;
+            }
+            break;
         }
     }
     
-    return false;
+    switch (dst.type) {
+        case POS_FOUNDATION: {
+            dstPile = &board.foundations.at(dst.f - 1);
+            break;
+        }
+        case POS_TABLEAU: {
+            dstPile = &board.tableaus.at(dst.t.col - 1);
+            break;
+        }
+    }
+    
+    if (dstPile->canPlaceCard(srcCard)) {
+        previous = board;
+        moveCardRange(srcPile, dstPile, numCardsMoving);
+        if (src.type == POS_TABLEAU) {
+            srcPile->setNumCardsFaceUp(srcCardsLeftFaceUp);
+        }
+        if (dst.type == POS_TABLEAU) {
+            dstPile->setNumCardsFaceUp(dstPile->getNumCardsFaceUp() + numCardsMoving);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Draw cards from the deck and hold face up
-// Returns True if the move is successful
-bool Game::drawCards()
+void Game::drawCards()
 {
     int deckLength = board.deck.size();
     if (deckLength == 0) {
         dealCardRange(&board.draw, &board.deck, board.draw.size());
-        return true;
     } else {
         int cardsToDraw = (deckLength >= 3 ? 3 : deckLength);
         dealCardRange(&board.deck, &board.draw, cardsToDraw);
     }
-    return true;
 }
 
 std::vector<Command> Game::generateValidMoves()
@@ -214,17 +171,30 @@ std::vector<Command> Game::generateValidMoves()
     // Check draw card against each tableau
     if (board.draw.size() > 0) {
         for (int i = 0; i < board.tableaus.size(); i++) {
-            if (board.tableaus.at(i).placeCard(board.draw.cardAtTop())) {
+            if (board.tableaus.at(i).canPlaceCard(board.draw.cardAtTop())) {
                 // construct command
-                Command move = { PLAY, 0, 1, (i + 1), (board.tableaus.at(i).size() + 1) };
+                Position src;
+                src.type = POS_DRAW;
+                
+                Position dst;
+                dst.type = POS_TABLEAU;
+                dst.t.col = i + 1;
+                dst.t.row = board.tableaus.at(i).size() + 1;
+                Command move = { PLAY, src, dst };
                 validMoves.push_back(move);
             }
         }
         // Check draw card against each foundation
         for (int i = 0; i < board.foundations.size(); i++) {
-            if (board.foundations.at(i).placeCard(board.draw.cardAtTop())) {
+            if (board.foundations.at(i).canPlaceCard(board.draw.cardAtTop())) {
                 // construct command
-                Command move = { PLAY, 0, 1, 0, (i + 2) };
+                Position src;
+                src.type = POS_DRAW;
+                
+                Position dst;
+                dst.type = POS_FOUNDATION;
+                dst.f = Pos_Foundation(i) + 1;
+                Command move = { PLAY, src, dst };
                 validMoves.push_back(move);
             }
         }
@@ -232,10 +202,19 @@ std::vector<Command> Game::generateValidMoves()
 
     // Check each tableau ending against each foundation
     for (int i = 0; i < board.tableaus.size(); i++) {
+        if (board.tableaus.at(i).size() == 0) continue;
         for (int j = 0; j < board.foundations.size(); j++) {
-            if (board.foundations.at(j).placeCard(board.tableaus.at(i).cardAtTop())) {
+            if (board.foundations.at(j).canPlaceCard(board.tableaus.at(i).cardAtTop())) {
                 // construct command
-                Command move = { PLAY, (i + 1), board.tableaus.at(i).size(), 0, (j + 2) };
+                Position src;
+                src.type = POS_TABLEAU;
+                src.t.col = i + 1;
+                src.t.row = board.tableaus.at(i).size();
+                
+                Position dst;
+                dst.type = POS_FOUNDATION;
+                dst.f = Pos_Foundation(j) + 1;
+                Command move = { PLAY, src, dst };
                 validMoves.push_back(move);
             }
         }
@@ -246,11 +225,20 @@ std::vector<Command> Game::generateValidMoves()
         for (int j = 0; j < board.tableaus.size(); j++) { // destination
             if (i == j) continue;
             int size = board.tableaus.at(i).size();
-            for (int k = (size - board.tableaus.at(i).numCardsFaceUp); k < size; k++) {
+            for (int k = (size - board.tableaus.at(i).getNumCardsFaceUp()); k < size; k++) {
                 
-                if (board.tableaus.at(j).placeCard(board.tableaus.at(i).cardAt(k))) {
+                if (board.tableaus.at(j).canPlaceCard(board.tableaus.at(i).cardAt(k))) {
                     // construct command
-                    Command move = { PLAY, (i + 1), (k + 1), (j + 1), (board.tableaus.at(j).size() + 1) };
+                    Position src;
+                    src.type = POS_TABLEAU;
+                    src.t.col = i + 1;
+                    src.t.row = k + 1;
+                    
+                    Position dst;
+                    dst.type = POS_TABLEAU;
+                    dst.t.col = j + 1;
+                    dst.t.row = board.tableaus.at(j).size() + 1;
+                    Command move = { PLAY, src, dst };
                     validMoves.push_back(move);
                 }
             }
@@ -261,6 +249,10 @@ std::vector<Command> Game::generateValidMoves()
     return validMoves;
 }
 
+/*
+ Moves specified number of cards from src to dst in "dealing" order,
+ effectively reversing order
+*/
 void Game::dealCardRange(CardPile *src, CardPile *dst, int cardsToMove)
 {
     while (cardsToMove--) {
@@ -268,6 +260,10 @@ void Game::dealCardRange(CardPile *src, CardPile *dst, int cardsToMove)
     }
 }
 
+/*
+ Moves specified number of cards from src to dst in original order,
+ preserving order
+*/
 void Game::moveCardRange(CardPile *src, CardPile *dst, int cardsToMove)
 {
     CardPile hold;

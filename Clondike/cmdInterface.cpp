@@ -6,6 +6,9 @@
 //  Copyright © 2017 Alex King. All rights reserved.
 //
 
+#include <regex>
+#include <string>
+
 #include "cmdInterface.hpp"
 
 void GameInterface::launchGameLoop()
@@ -18,31 +21,31 @@ void GameInterface::launchGameLoop()
     
     while (true) {
         std::getline(cin, s);
-        std::stringstream tokenStream(s);
+        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
         Command command;
         Status status;
         
-        // input and execution
-
-        while (tokenStream >> s) {
-            tokens.push_back(s);
-        }
-        if (tokens.size() == 1) {
-            command = parseToken1(tokens.at(0));
+        std::regex playPattern("([1-7],\\d+|DC|F[1-4]) ([1-7],\\d+|DC|F[1-4])");
+        std::smatch playMatch;
+        
+        std::regex controlPattern("([a-z]+)");
+        std::smatch controlMatch;
+        
+        // User inputted integers
+        if (std::regex_match(s, playMatch, playPattern)) {
+            Position src = commandToPosition(playMatch[1]);
+            Position dst = commandToPosition(playMatch[2]);
+            command = Command { PLAY, src, dst };
             status = g.executeCommand(command);
-        } else if (tokens.size() == 4) {
-            command = parsePlayTokens(tokens.at(0), tokens.at(1),
-                                              tokens.at(2), tokens.at(3));
+
+        // User inputted a single command
+        } else if (std::regex_match(s, controlMatch, controlPattern)) {
+            command = parseToken1(controlMatch[0]);
             status = g.executeCommand(command);
         } else {
             status = UNRECOGNIZED;
         }
-        tokens.clear();
-        
-        
-        // output
-        
-        
+
         switch (status) {
             case OK: {
                 switch (command.move) {
@@ -77,7 +80,10 @@ void GameInterface::launchGameLoop()
                 }
                 break;
             }
-            
+
+            case WON:
+                exitGame();
+                return;
             case UNRECOGNIZED:
                 displayErrorMessage(UNRECOGNIZED);
                 break;
@@ -131,15 +137,16 @@ Command GameInterface::parseToken1(string token1)
     }
 }
 
+// TODO: Incomplete. Must rely on not repeating hints
 void GameInterface::autoPlay()
 {
-    int tries = 20;
+    int tries = 3;
     while (!g.checkIfWon() and tries > 0)
     {
         auto validMoves = g.generateValidMoves();
         if (validMoves.size() > 0) {
             g.executeCommand(validMoves.at(0));
-            tries = 20;
+            tries = 3;
         }
         else {
             g.executeCommand(Command { DRAW });
@@ -148,20 +155,35 @@ void GameInterface::autoPlay()
         updateView();
     }
     if (tries == 0) cout << "Failure.\n";
-    else cout << "Success?!\n";
+    else cout << "Success!\n";
 }
 
-// TODO: error handling
-// atoi returns 0 even if
-Command GameInterface::parsePlayTokens(string srcRow, string srcCol,
-                                      string dstRow, string dstCol)
+// Takes string input of positions and converts them to Position structures
+// commandToPosition
+Position GameInterface::commandToPosition(string command)
 {
-    int srcRowToken = atoi(srcRow.c_str());
-    int srcColToken = atoi(srcCol.c_str());
-    int dstRowToken = atoi(dstRow.c_str());
-    int dstColToken = atoi(dstCol.c_str());
+    Position position;
     
-    return Command { PLAY, srcRowToken, srcColToken, dstRowToken, dstColToken };
+    std::regex tableauPattern("(\\d),(\\d+)");
+    std::smatch tableauMatch;
+    std::regex foundationPattern("F([1-4])");
+    std::smatch foundationMatch;
+
+    if (std::regex_match(command, tableauMatch, tableauPattern)) {
+        int colIndex = std::atoi(tableauMatch[1].str().c_str());
+        int rowIndex = std::atoi(tableauMatch[2].str().c_str());
+        position.type = POS_TABLEAU;
+        position.t = Pos_Tableau { colIndex, rowIndex };
+
+    } else if (command == "DC") {
+        position.type = POS_DRAW;
+
+    } else if (std::regex_match(command, foundationMatch, foundationPattern)) {
+        Pos_Foundation colIndex = atoi(foundationMatch[1].str().c_str());
+        position.type = POS_FOUNDATION;
+        position.f = colIndex;
+    }
+    return position;
 }
 
 void GameInterface::displayErrorMessage(Status s)
@@ -186,7 +208,7 @@ void GameInterface::updateView()
 {
     Board* b = g.getBoard();
     cout << endl;
-    cout << "          01   02 03 04 05\n";
+    cout << "          DC   F1 F2 F3 F4\n";
     cout << "          \\/\n";
     if (b->deck.isEmpty()) {
         cout << (COLOR ? "\033[44m" : "") << "[ ]"
@@ -236,7 +258,7 @@ void GameInterface::updateView()
         for (auto& col: b->tableaus) {
             if (col.size() > row) {
                 // If the card is uncovered, print its identity
-                if ((col.size() - row) <= col.numCardsFaceUp) {
+                if ((col.size() - row) <= col.getNumCardsFaceUp()) {
                     printCard(col.cardAt(row));
                 } else {
                     cout << (COLOR ? "\033[44m" : "") << "[]" 

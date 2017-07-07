@@ -29,6 +29,11 @@ int CardPile::size()
     return cardsList.size();
 }
 
+bool CardPile::canPlaceCard(Card c)
+{
+    return false;
+}
+
 // Removes card at top of pile and returns it
 Card CardPile::dealFromTop()
 {
@@ -40,4 +45,14 @@ Card CardPile::dealFromTop()
 Card CardPile::cardAtTop()
 {
     return cardsList.back();
+}
+
+int CardPile::getNumCardsFaceUp()
+{
+    return numCardsFaceUp;
+}
+
+void CardPile::setNumCardsFaceUp(int cardsFaceUp)
+{
+    numCardsFaceUp = cardsFaceUp;
 }

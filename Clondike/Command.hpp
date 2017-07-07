@@ -16,27 +16,51 @@
 
 using namespace std;
 
-// TODO: probably drop the "type" from this enum, maybe just rename it
-enum MoveType { QUIT, DRAW, HINT, UNDO, SOLVE, AUTO, HELP, PLAY, UNKNOWN };
+/* A foundation position is an integer 1-4 inclusive */
+typedef int Pos_Foundation;
+
+/* A tableau position is a column 1-7 identifying the tableau, and a row identifying
+   the card(s) 
+ */
+struct Pos_Tableau {
+    int col;
+    int row;
+};
+
+/* Accessible cards are therefore either the top card of the draw pile, any 
+   foundation position, and any tableau position 
+ */
+enum PositionType { POS_DRAW, POS_FOUNDATION, POS_TABLEAU };
+
+/* The position structure allows us to pick between them and access the data that we
+   need
+ */
+struct Position {
+    PositionType type;
+    union {
+        Pos_Foundation f;
+        Pos_Tableau t;
+    };
+};
+
+
+enum CommandType { QUIT, DRAW, HINT, UNDO, SOLVE, AUTO, HELP, PLAY, UNKNOWN };
+
 
 enum Status { OK, WON, UNRECOGNIZED, INVALID, NO_UNDO };
 
-// Wish list: sew together key-value list of MoveType, StringList such that we can
-// easily iterate over it to check if input is in StringList, in which case output Move
-static std::vector<std::string> quitStrings  = {"q", "quit", "exit"};
-static std::vector<std::string> autoStrings  = {"a", "auto", "autoplay"};
-static std::vector<std::string> drawStrings  = {"d", "draw"};
-static std::vector<std::string> hintStrings  = {"h", "hint"};
-static std::vector<std::string> undoStrings  = {"u", "undo"};
-static std::vector<std::string> solveStrings = {"s", "solve"};
-static std::vector<std::string> helpStrings  = {"help"};
+static vector<string> quitStrings  = {"q", "quit", "exit"};
+static vector<string> autoStrings  = {"a", "auto", "autoplay"};
+static vector<string> drawStrings  = {"d", "draw"};
+static vector<string> hintStrings  = {"h", "hint"};
+static vector<string> undoStrings  = {"u", "undo"};
+static vector<string> solveStrings = {"s", "solve"};
+static vector<string> helpStrings  = {"help"};
 
 struct Command {
-    MoveType move;
-    int      srcCol;
-    int      srcRow;
-    int      dstCol;
-    int      dstRow;
+    CommandType move;
+    Position src;
+    Position dst;
     
     friend ostream &operator<<(ostream &os, Command const &c);
 };

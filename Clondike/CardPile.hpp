@@ -19,12 +19,16 @@ public:
     bool isEmpty();
     bool addCard(Card c);
     int  size();
+    int  getNumCardsFaceUp();
+    void setNumCardsFaceUp(int cardsFaceUp);
+    virtual bool canPlaceCard(Card c);
     Card cardAt(int i);
     Card dealFromTop();
     Card cardAtTop();
     
 protected:
     std::vector<Card> cardsList;
+    int numCardsFaceUp;
 };
 
 #endif /* CardPile_hpp */

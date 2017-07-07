@@ -9,10 +9,7 @@
 #ifndef Card_hpp
 #define Card_hpp
 
-#include <stdio.h>
-#include <iostream>
-
-using namespace std;
+#include <string>
 
 enum Rank {
     RANK_A, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_9,
@@ -26,13 +23,13 @@ enum Suit {
     HEART, CLUB, DIAMOND, SPADE, NUM_SUITS
 };
 
-static string rankNames = "A23456789TJQK";
-static string suitNames = "HCDS";
+static std::string rankNames = "A23456789TJQK";
+static std::string suitNames = "HCDS";
 
 class Card {
 public:
+    Card();
     Card(Rank r, Suit s);
-    friend std::ostream &operator<<(std::ostream &os, Card const &c);
 
     Rank rank;
     Suit suit;

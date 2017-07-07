@@ -16,7 +16,8 @@
 #include "Command.hpp"
 #include "Game.hpp"
 
-#define COLOR true
+// Toggle ON for Unix terminal colored printing, OFF for black and white
+#define COLOR false
 
 enum InputType { SINGLE_INPUT, MULTI_INPUT, UNKNOWN_INPUT };
 
@@ -32,8 +33,7 @@ private:
     Game g;
     
     Command parseToken1(string token1);
-    Command parsePlayTokens(string srcRow, string srcCol, 
-                            string dstRow, string dstCol);
+    Position commandToPosition(string command);
     void    displayErrorMessage(Status status);
     void    updateView();
     void    printCard(Card c);

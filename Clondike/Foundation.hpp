@@ -17,7 +17,7 @@
 class Foundation: public CardPile {
 public:
     bool isFull();
-    bool placeCard(Card c);
+    virtual bool canPlaceCard(Card c);
 };
 
 #endif /* Foundation_hpp */

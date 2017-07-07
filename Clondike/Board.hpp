@@ -19,10 +19,7 @@
 
 #define NUM_TABLEAUS 7
 #define NUM_FOUNDATIONS 4
-#define FOUNDATION_OFFSET 2
 #define NUM_CARDS_DRAWN 3
-
-using namespace std;
 
 class Board {
 public:
@@ -30,11 +27,9 @@ public:
     Board(Deck d);
     int maxTableauLength();
     
-    friend ostream &operator<<(ostream &os, Board &b);
-    
     Deck                deck;
-    vector<Tableau>     tableaus;
-    vector<Foundation>  foundations;
+    std::vector<Tableau>     tableaus;
+    std::vector<Foundation>  foundations;
     CardPile            draw;
 };
 
