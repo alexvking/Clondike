@@ -16,8 +16,8 @@
 #include "Command.hpp"
 #include "Game.hpp"
 
-// Toggle ON for Unix terminal colored printing, OFF for black and white
-#define COLOR false
+// Toggle true for Unix terminal colored printing, false for black and white
+#define COLOR true
 
 enum InputType { SINGLE_INPUT, MULTI_INPUT, UNKNOWN_INPUT };
 
@@ -38,6 +38,8 @@ private:
     void    updateView();
     void    printCard(Card c);
     void    displayHints();
+    void    displayHelp();
+    void    displayNewGameMessage();
     void    exitGame();
     void    autoPlay();
     

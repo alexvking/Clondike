@@ -37,7 +37,9 @@ Status Game::executeCommand(Command command)
             return OK;
         }
         case DRAW: {
+            previous = board;
             drawCards();
+            canUndo = true;
             return OK;
         }
         case HINT: {
@@ -56,13 +58,20 @@ Status Game::executeCommand(Command command)
         case SOLVE: {
             return OK;
         }
+        case NEWGAME: {
+            return OK;
+        }
         case AUTO: {
             return OK;
         }
         case HELP: {
             return OK;
         }
+        case UNKNOWN: {
+            return UNRECOGNIZED;
+        }
         case PLAY: {
+            previous = board;
             bool result = makePlay(command.src, command.dst);
             if (result == false) return INVALID;
             else {
@@ -112,7 +121,14 @@ bool Game::makePlay(Position src, Position dst)
         }
         case POS_TABLEAU: {
             srcPile = &board.tableaus.at(src.t.col - 1);
+            
+            // if row specified is out of bounds
             if (src.t.row < 1 or src.t.row > srcPile->size()) return false;
+            
+            // if row specified is not yet uncovered
+            if (src.t.row <=
+                (srcPile->size() - srcPile->getNumCardsFaceUp())) return false;
+            
             srcCard = srcPile->cardAt(src.t.row - 1);
             numCardsMoving = srcPile->size() - src.t.row + 1;
             if (numCardsMoving < srcPile->getNumCardsFaceUp()) {
@@ -138,7 +154,6 @@ bool Game::makePlay(Position src, Position dst)
     }
     
     if (dstPile->canPlaceCard(srcCard)) {
-        previous = board;
         moveCardRange(srcPile, dstPile, numCardsMoving);
         if (src.type == POS_TABLEAU) {
             srcPile->setNumCardsFaceUp(srcCardsLeftFaceUp);

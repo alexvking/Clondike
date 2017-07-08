@@ -44,7 +44,8 @@ struct Position {
 };
 
 
-enum CommandType { QUIT, DRAW, HINT, UNDO, SOLVE, AUTO, HELP, PLAY, UNKNOWN };
+enum CommandType { QUIT, DRAW, HINT, UNDO, SOLVE, AUTO, HELP, PLAY, UNKNOWN,
+                   NEWGAME };
 
 
 enum Status { OK, WON, UNRECOGNIZED, INVALID, NO_UNDO };
@@ -56,6 +57,8 @@ static vector<string> hintStrings  = {"h", "hint"};
 static vector<string> undoStrings  = {"u", "undo"};
 static vector<string> solveStrings = {"s", "solve"};
 static vector<string> helpStrings  = {"help"};
+static vector<string> newGameStrings  = {"new", "newgame"};
+
 
 struct Command {
     CommandType move;

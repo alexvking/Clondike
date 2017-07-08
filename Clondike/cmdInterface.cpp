@@ -14,14 +14,16 @@
 void GameInterface::launchGameLoop()
 {
     g = Game();
+    displayNewGameMessage();
     updateView();
+    
     std::vector<std::string> tokens;
     string s = "";
     string token;
     
     while (true) {
+        cout << "Enter a move: ";
         std::getline(cin, s);
-        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
         Command command;
         Status status;
         
@@ -73,6 +75,12 @@ void GameInterface::launchGameLoop()
                     case SOLVE:
                         break;
                     case HELP:
+                        displayHelp();
+                        break;
+                    case NEWGAME:
+                        g = Game();
+                        displayNewGameMessage();
+                        updateView();
                         break;
                     case QUIT:
                         exitGame();
@@ -131,9 +139,12 @@ Command GameInterface::parseToken1(string token1)
                != solveStrings.end()) {
         
         return Command { SOLVE };
+    } else if (std::find(newGameStrings.begin(), newGameStrings.end(), token1)
+               != solveStrings.end()) {
+        
+        return Command { NEWGAME };
     } else {
-        // TODO: this shouldn't be the else case, there should be one more
-        return Command { PLAY };
+        return Command { UNKNOWN };
     }
 }
 
@@ -196,7 +207,7 @@ void GameInterface::displayErrorMessage(Status s)
             cout << "Error: invalid coordinates. That move isn't legal.\n";
             break;
         case NO_UNDO:
-            cout << "Error: cannot undo. You must have a previous state to revert to.";
+            cout << "Error: cannot undo. You must have a previous state to revert to.\n";
             break;
         default:
             cout << "Error.\n";
@@ -306,6 +317,26 @@ void GameInterface::displayHints()
     for (auto & m : validMoves) {
         cout << m << endl;
     }
+}
+
+void GameInterface::displayHelp()
+{
+    cout << "HOW TO PLAY:\n\n";
+    cout << "Address source and destination locations as labeled (DC , F1 ... F4),\n";
+    cout << "or as coordinates with a comma: 1,1 , 7,11 , etc.\n";
+    cout << "Example moves: DC 1,2 ; 3,3 F1 ; 5,6 4,2\n\n";
+    cout << "OTHER COMMANDS:\n\n";
+    cout << "draw, d : draw cards\n";
+    cout << "hint, h : show hint\n";
+    cout << "quit, q, exit : quit the game\n";
+    cout << "solve, s : solve a winnable game\n";
+    cout << "help : show help\n";
+    cout << "\n";
+}
+
+void GameInterface::displayNewGameMessage()
+{
+    cout << "Welcome to Clondike! You've started a new game.\n";
 }
 
 void GameInterface::exitGame()
